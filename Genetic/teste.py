@@ -5,7 +5,7 @@ from maze import cria_matriz
 
 
 if __name__ == '__main__':
-    with open("labirinto1.txt", 'r') as f:
+    with open("./Genetic/labirinto1.txt", 'r') as f:
         arquivo = f.readlines()
         tamanho_matriz, maze = cria_matriz(arquivo)
         
@@ -33,4 +33,6 @@ if __name__ == '__main__':
         print('\n')
         print(best.nota_avaliacao)
         print(best.cromossomo)
+        print(f'Comidas = {best.comidas_encontradas}')
+        print(f'Index do ultimo = {best.salva_index}')
         
