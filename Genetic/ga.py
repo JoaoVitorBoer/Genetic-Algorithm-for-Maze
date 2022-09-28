@@ -1,6 +1,7 @@
 import random
 from random import random as rand
 from maze import cria_matriz
+import sys
 
 class Individuo():
     def __init__(self, maze, tamanho_matriz, geracao=0):
@@ -169,14 +170,16 @@ class Individuo():
                 self.salva_index += 1  
         
     def crossover(self, outro_individuo):
-      
-        filho1 = self.cromossomo[0:self.salva_index+1] + outro_individuo.cromossomo[self.salva_index+1::]
-        filho2 = outro_individuo.cromossomo[0:self.salva_index+1] + self.cromossomo[self.salva_index+1::]
-        
+        corte = self.salva_index+1
+        filho1 = self.cromossomo[0:corte] + outro_individuo.cromossomo[corte::]
+        filho2 = outro_individuo.cromossomo[0:corte] + self.cromossomo[corte::]
+
         filhos = [Individuo(self.maze, self.tamanho_matriz, self.geracao + 1),
                   Individuo(self.maze, self.tamanho_matriz, self.geracao + 1)]
+
         filhos[0].cromossomo = filho1
         filhos[1].cromossomo = filho2
+
         return filhos
     
     def mutacao(self, taxa_mutacao):
@@ -270,8 +273,8 @@ class AlgoritmoGenetico():
                 nova_populacao = []
                 
                 for individuos_gerados in range(0, self.tamanho_populacao, 2):
-                    #pai1 = 0 # Sempre o melhor vai ser passado para o crossover
-                    pai1 = self.seleciona_pai(soma_avaliacao)
+                    pai1 = 0 # Sempre o melhor vai ser passado para o crossover
+                    #pai1 = self.seleciona_pai(soma_avaliacao)
                     pai2 = self.seleciona_pai(soma_avaliacao) #  retorna indice aleatorio para o crossover
               
                     filhos = self.populacao[pai1].crossover(self.populacao[pai2])

@@ -35,4 +35,7 @@ if __name__ == '__main__':
         print(best.cromossomo)
         print(f'Comidas = {best.comidas_encontradas}')
         print(f'Index do ultimo = {best.salva_index}')
+
+        a = ['DOWN', 'DOWN', 'L', 'RDOWN', 'R', 'LDOWN', 'UP', 'R', 'UP', 'RUP', 'UP', 'LUP', 'R', 'R', 'DOWN', 'RDOWN', 'RDOWN', 'L', 'LUP', 'LUP', 'LUP', 'RUP', 'RDOWN', 'RDOWN', 'RDOWN', 'LUP', 'UP', 'DOWN', 'R', 'UP', 'LDOWN', 'UP', 'L', 'DOWN', 'L', 'LUP', 'RUP', 'L', 'RDOWN', 'DOWN', 'LDOWN', 'LDOWN', 'RDOWN', 'LDOWN', 'L', 'LUP', 'R', 'LUP']
+        print(len(a))
         
