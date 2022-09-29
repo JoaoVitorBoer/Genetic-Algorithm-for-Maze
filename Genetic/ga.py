@@ -17,9 +17,9 @@ class Individuo():
         self.salva_index = -1
 
         for i in range(50):
-            self.cromossomo.append(random.choice(self.possiveis_movimentos))
-        #print(self.cromossomo)
-    
+            self.cromossomo.append(random.choice(self.possiveis_movimentos))      
+           
+
     def avaliacao(self):
         for gene in self.cromossomo:
                 if gene == "L":
@@ -171,6 +171,7 @@ class Individuo():
         
     def crossover(self, outro_individuo):
         corte = self.salva_index+1
+     
         filho1 = self.cromossomo[0:corte] + outro_individuo.cromossomo[corte::]
         filho2 = outro_individuo.cromossomo[0:corte] + self.cromossomo[corte::]
 
@@ -179,6 +180,10 @@ class Individuo():
 
         filhos[0].cromossomo = filho1
         filhos[1].cromossomo = filho2
+
+        #precisamos garantir o index para efetuar a mutação a partir de tal ponto, por isso avaliamos agora
+        filhos[0].avaliacao()
+        filhos[1].avaliacao()
 
         return filhos
     
@@ -229,6 +234,7 @@ class AlgoritmoGenetico():
         self.melhor_solucao = self.populacao[0]
         
     def ordena_populacao(self):
+        
         self.populacao = sorted(self.populacao,
                                 key = lambda populacao: populacao.nota_avaliacao,
                                 reverse = True)
@@ -252,7 +258,6 @@ class AlgoritmoGenetico():
             soma += self.populacao[i].nota_avaliacao
             pai += 1
             i += 1
-        #print(f'Pai escolhido {pai}')
         return pai
     
     def visualiza_geracao(self): 
@@ -262,13 +267,12 @@ class AlgoritmoGenetico():
         
         for individuo in self.populacao:
             individuo.avaliacao()
-            
+        
         self.ordena_populacao()
         
-        self.visualiza_geracao()
         
         while True:
-            for geracao in range(self.tamanho_populacao): ### while
+             ### while
                 soma_avaliacao = self.soma_avaliacoes()
                 nova_populacao = []
                 
@@ -276,20 +280,21 @@ class AlgoritmoGenetico():
                     pai1 = 0 # Sempre o melhor vai ser passado para o crossover
                     #pai1 = self.seleciona_pai(soma_avaliacao)
                     pai2 = self.seleciona_pai(soma_avaliacao) #  retorna indice aleatorio para o crossover
-              
+
+                    if pai2 == 0:   #garantindo que não vai ser o mesmo cromossomo para crossover
+                        pai2 = random.randint(1, 50)
                     filhos = self.populacao[pai1].crossover(self.populacao[pai2])
-                    
+
                     nova_populacao.append(filhos[0].mutacao(taxa_mutacao))
                     nova_populacao.append(filhos[1].mutacao(taxa_mutacao))
-                
+
                 self.populacao = list(nova_populacao)
-                
+
                 for individuo in self.populacao:
                     individuo.avaliacao()
-                
+                        
                 self.ordena_populacao()
-                
-                self.visualiza_geracao()
+               
                 
                 melhor = self.populacao[0]
                 self.melhor_individuo(melhor) 
@@ -305,10 +310,11 @@ if __name__ == '__main__':
     with open("./Genetic/labirinto1.txt", 'r') as f:
         arquivo = f.readlines()
         tamanho_matriz, maze = cria_matriz(arquivo)
+        print(tamanho_matriz)
         print(maze[tamanho_matriz-1][tamanho_matriz-1])
 
         taxa_mutacao = 80
-        tamanho_populacao = 100
+        tamanho_populacao = 200
         ag = AlgoritmoGenetico(tamanho_populacao, maze, tamanho_matriz)
         achou = ag.resolver(taxa_mutacao)
         print(achou.comidas_encontradas)
