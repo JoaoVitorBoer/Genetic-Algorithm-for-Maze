@@ -321,7 +321,7 @@ class AlgoritmoGenetico():
                 melhor = self.populacao[0]
                 self.melhor_individuo(melhor) 
                 
-                self.salva_melhores_caminhos.append(self.melhor_solucao)
+                self.salva_melhores_caminhos.append(melhor)
 
                 if self.melhor_solucao.comidas_encontradas == 5:
                     return self.salva_melhores_caminhos

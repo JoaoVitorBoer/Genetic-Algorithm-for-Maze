@@ -1,6 +1,7 @@
-def writeMaze(maze):
+def writeMaze(maze, geracao):
   labirinto = maze
   with open('stepByStep.txt', 'a') as file: 
+    file.write(f'Geracao -> {geracao} \n')
     for x in labirinto:
         for y in x:
          file.write(y + ' ')
@@ -49,6 +50,6 @@ def writeFile(lista, maze):
                 maze_aux[pos[0]+1][pos[1]+1] = "-"
                 pos = (pos[0]+1, pos[1]+1)
 
-        writeMaze(maze_aux)
+        writeMaze(maze_aux, individuo.geracao)
         maze_aux = maze
         pos = (0,0)
