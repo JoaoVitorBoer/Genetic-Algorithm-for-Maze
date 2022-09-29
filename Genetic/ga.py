@@ -239,6 +239,7 @@ class AlgoritmoGenetico():
     def __init__(self, tamanho_populacao, maze, tamanho_matriz):
         self.tamanho_populacao = tamanho_populacao
         self.tamanho_matriz = tamanho_matriz
+        self.comidas = tamanho_matriz/2
         self.populacao = []
         self.geracao = 0
         self.melhor_solucao = None
@@ -323,7 +324,7 @@ class AlgoritmoGenetico():
                 
                 self.salva_melhores_caminhos.append(melhor)
 
-                if self.melhor_solucao.comidas_encontradas == 5:
+                if self.melhor_solucao.comidas_encontradas == self.comidas:
                     return self.salva_melhores_caminhos
         
                 
