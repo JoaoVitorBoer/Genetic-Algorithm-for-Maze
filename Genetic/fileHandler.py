@@ -1,46 +1,53 @@
 def writeMaze(maze, indivuo):
+  labirinto = maze
   with open('path.txt', 'a') as file: 
-    for x in maze:
-        file.writelines(x)
-
+    for x in labirinto:
+        for y in x:
+         file.write(y + ' ')
+            
+        file.write('\n')
+    file.write('\n')
 
 
 def writeFile(lista, maze): 
     pos = (0,0)
-
-    for i, individuo in enumerate(lista):
-        #file.write(f'Geração {individuo.geracao} \n')
-        for gene in individuo.cromossomo:
+    labirinto = maze
+    for individuo in lista:
+        for i, gene in enumerate(individuo.cromossomo):
+           
+            if i >= individuo.salva_index: 
+                break
             if gene == "L":
-                maze[pos[0]][pos[1]-1] = "-"
+                labirinto[pos[0]][pos[1]-1] = "-"
                 pos = (pos[0], pos[1]-1)
 
             if gene == "R":
-                maze[pos[0]][pos[1]+1] = "-"
+                labirinto[pos[0]][pos[1]+1] = "-"
                 pos = (pos[0], pos[1]+1)
 
             if gene == "UP":
-                maze[pos[0]-1][pos[1]] = "-"
+                labirinto[pos[0]-1][pos[1]] = "-"
                 pos = (pos[0]-1, pos[1])
 
             if gene == "DOWN":
-                maze[pos[0]+1][pos[1]] = "-"
+                labirinto[pos[0]+1][pos[1]] = "-"
                 pos = (pos[0]+1, pos[1])
 
             if gene == "LUP":
-                maze[pos[0]-1][pos[1]-1] = "-"
+                labirinto[pos[0]-1][pos[1]-1] = "-"
                 pos = (pos[0]-1, pos[1]-1)
                                       
             if gene == "RUP":
-                maze[pos[0]-1][pos[1]+1] = "-"
+                labirinto[pos[0]-1][pos[1]+1] = "-"
                 pos = (pos[0]-1, pos[1]+1)
 
             if gene == "LDOWN":
-                maze[pos[0]+1][pos[1]-1] = "-"    
+                labirinto[pos[0]+1][pos[1]-1] = "-"    
                 pos = (pos[0]+1, pos[1]-1)
 
             if gene == "RDOWN":
-                maze[pos[0]+1][pos[1]+1] = "-"   
+                labirinto[pos[0]+1][pos[1]+1] = "-"   
                 pos = (pos[0]+1, pos[1]+1)
 
-        writeMaze(maze, individuo)
+       
+        writeMaze(labirinto, individuo)

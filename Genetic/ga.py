@@ -16,7 +16,7 @@ class Individuo():
         self.comidas_encontradas = 0
         self.salva_index = -1
 
-        for i in range(50):
+        for i in range(75):
             self.cromossomo.append(random.choice(self.possiveis_movimentos))      
            
 
@@ -104,7 +104,7 @@ class Individuo():
                             if (self.pos[0]-1,self.pos[1]-1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]-1,self.pos[1]-1)
-                            elif (self.pos[0]+1,self.pos[1]) not in self.visitados:
+                            elif (self.pos[0]-1,self.pos[1]-1) not in self.visitados:
                                     self.nota_avaliacao += 2 if self.maze[self.pos[0]-1][self.pos[1]-1] == '0' else 10 
                                     if self.maze[self.pos[0]-1][self.pos[1]-1] == 'C':
                                         self.comidas_encontradas += 1
@@ -140,7 +140,7 @@ class Individuo():
                             if (self.pos[0]+1,self.pos[1]-1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]+1,self.pos[1]-1)
-                            elif (self.pos[0]-1,self.pos[1]+1) not in self.visitados:                                    
+                            elif (self.pos[0]+1,self.pos[1]-1) not in self.visitados:                                    
                                 self.nota_avaliacao += 2 if self.maze[self.pos[0]+1][self.pos[1]-1] == '0' else 10 
                                 if self.maze[self.pos[0]+1][self.pos[1]-1] == 'C':
                                         self.comidas_encontradas += 1
@@ -154,7 +154,7 @@ class Individuo():
                     if  self.pos[0]+1 < 0 or self.pos[1]+1 < 0 or self.pos[0]+1 > (self.tamanho_matriz-1) or self.pos[1]+1 > (self.tamanho_matriz-1): break
                        
                     else: 
-                         if self.maze[self.pos[0]+1][self.pos[1]+1] == '0' and (self.pos[0]+1, self.pos[1]+1) <= (self.tamanho_matriz-1, self.tamanho_matriz-1) and (self.pos[0]+1, self.pos[1]+1) > (0,0):
+                         if self.maze[self.pos[0]+1][self.pos[1]+1] == '0' or self.maze[self.pos[0]+1][self.pos[1]+1] == 'C':
                             if (self.pos[0]+1,self.pos[1]+1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]+1,self.pos[1]+1)
@@ -167,6 +167,7 @@ class Individuo():
                                 self.visitados.append(self.pos)
                             
                          else: break   
+
                 self.salva_index += 1  
         
     def crossover(self, outro_individuo):
@@ -304,6 +305,7 @@ class AlgoritmoGenetico():
                 print(f"\nMelhor solução -> G: {self.melhor_solucao.geracao} Nota: {self.melhor_solucao.nota_avaliacao} Index: {self.melhor_solucao.salva_index} Comidas: {self.melhor_solucao.comidas_encontradas} Cromossomo: {self.melhor_solucao.cromossomo}")
                 self.salva_melhores_caminhos.append(self.melhor_solucao)
                 if self.melhor_solucao.comidas_encontradas == 5:
+                    print(f'index {self.melhor_solucao.salva_index}')
                     return self.salva_melhores_caminhos
         
                 
@@ -314,7 +316,7 @@ if __name__ == '__main__':
        arquivo = f.readlines()
        tamanho_matriz, maze = cria_matriz(arquivo)
        taxa_mutacao = 80
-       tamanho_populacao = 500
+       tamanho_populacao = 200
        ag = AlgoritmoGenetico(tamanho_populacao, maze, tamanho_matriz)
        melhores_caminhos = ag.resolver(taxa_mutacao) 
         
