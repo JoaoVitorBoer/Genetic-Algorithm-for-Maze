@@ -1,7 +1,7 @@
 import random
 from random import random as rand
 from maze import cria_matriz
-import sys
+from fileHandler import writeFile
 
 class Individuo():
     def __init__(self, maze, tamanho_matriz, geracao=0):
@@ -220,6 +220,8 @@ class Individuo():
         return self
         
 class AlgoritmoGenetico():
+    salva_melhores_caminhos = []
+
     def __init__(self, tamanho_populacao, maze, tamanho_matriz):
         self.tamanho_populacao = tamanho_populacao
         self.tamanho_matriz = tamanho_matriz
@@ -292,32 +294,32 @@ class AlgoritmoGenetico():
 
                 for individuo in self.populacao:
                     individuo.avaliacao()
+            
                         
                 self.ordena_populacao()
                
                 
                 melhor = self.populacao[0]
                 self.melhor_individuo(melhor) 
-                print(f"\nMelhor solução -> Nota: {self.melhor_solucao.nota_avaliacao} Index: {self.melhor_solucao.salva_index} Comidas: {self.melhor_solucao.comidas_encontradas} Cromossomo: {self.melhor_solucao.cromossomo}")
-
+                print(f"\nMelhor solução -> G: {self.melhor_solucao.geracao} Nota: {self.melhor_solucao.nota_avaliacao} Index: {self.melhor_solucao.salva_index} Comidas: {self.melhor_solucao.comidas_encontradas} Cromossomo: {self.melhor_solucao.cromossomo}")
+                self.salva_melhores_caminhos.append(self.melhor_solucao)
                 if self.melhor_solucao.comidas_encontradas == 5:
-                    return self.melhor_solucao
+                    return self.salva_melhores_caminhos
         
                 
          
 
 if __name__ == '__main__':
     with open("./Genetic/labirinto1.txt", 'r') as f:
-        arquivo = f.readlines()
-        tamanho_matriz, maze = cria_matriz(arquivo)
-        print(tamanho_matriz)
-        print(maze[tamanho_matriz-1][tamanho_matriz-1])
+       arquivo = f.readlines()
+       tamanho_matriz, maze = cria_matriz(arquivo)
+       taxa_mutacao = 80
+       tamanho_populacao = 500
+       ag = AlgoritmoGenetico(tamanho_populacao, maze, tamanho_matriz)
+       melhores_caminhos = ag.resolver(taxa_mutacao) 
+        
 
-        taxa_mutacao = 80
-        tamanho_populacao = 200
-        ag = AlgoritmoGenetico(tamanho_populacao, maze, tamanho_matriz)
-        achou = ag.resolver(taxa_mutacao)
-        print(achou.comidas_encontradas)
+       writeFile(melhores_caminhos, maze)
 
         
     
