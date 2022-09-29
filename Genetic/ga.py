@@ -277,7 +277,9 @@ class AlgoritmoGenetico():
         return pai
     
     def visualiza_geracao(self): 
-        pass
+        melhor = self.populacao[0]
+        print(f"G: {melhor.geracao} | Nota: {melhor.nota_avaliacao} | Index: {melhor.salva_index} | Comidas: {melhor.comidas_encontradas} | Cromossomo: {melhor.cromossomo} \n")
+
     def resolver(self, taxa_mutacao):
         self.inicializa_populacao()
         
@@ -285,7 +287,10 @@ class AlgoritmoGenetico():
             individuo.avaliacao()
         
         self.ordena_populacao()
-        
+        self.melhor_solucao = self.populacao[0]
+        self.salva_melhores_caminhos.append(self.melhor_solucao)
+
+        self.visualiza_geracao()
         
         while True:
              ### while
@@ -309,13 +314,13 @@ class AlgoritmoGenetico():
                 for individuo in self.populacao:
                     individuo.avaliacao()
             
-                        
-                self.ordena_populacao()
-               
                 
+                self.ordena_populacao()
+                self.visualiza_geracao()
+
                 melhor = self.populacao[0]
                 self.melhor_individuo(melhor) 
-                print(f"\nMelhor solução -> G: {self.melhor_solucao.geracao} | Nota: {self.melhor_solucao.nota_avaliacao} | Index: {self.melhor_solucao.salva_index} | Comidas: {self.melhor_solucao.comidas_encontradas} | Cromossomo: {self.melhor_solucao.cromossomo}")
+                
                 self.salva_melhores_caminhos.append(self.melhor_solucao)
 
                 if self.melhor_solucao.comidas_encontradas == 5:
