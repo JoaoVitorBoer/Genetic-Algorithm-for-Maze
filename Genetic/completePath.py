@@ -6,9 +6,9 @@ from maze import cria_matriz
 def generateCompletePathFile(cromossomo, maze, tamanho_matriz, index):
 
     pos = (0, 0)
-    
+
     for i, gene in enumerate(cromossomo):
-        
+
         if i > index:
             break
 
@@ -29,9 +29,8 @@ def generateCompletePathFile(cromossomo, maze, tamanho_matriz, index):
             pos = (pos[0]+1, pos[1])
 
         if gene == "LUP":
-            if maze[pos[0]-1][pos[1]-1] == "0" or "C":
-                maze[pos[0]-1][pos[1]-1] = "-"
-                pos = (pos[0]-1, pos[1]-1)
+            maze[pos[0]-1][pos[1]-1] = "-"
+            pos = (pos[0]-1, pos[1]-1)
 
         if gene == "RUP":
             maze[pos[0]-1][pos[1]+1] = "-"

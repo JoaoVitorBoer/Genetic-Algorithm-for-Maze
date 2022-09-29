@@ -22,12 +22,15 @@ class Individuo():
            
 
     def avaliacao(self):
-        for gene in self.cromossomo:
+        for i, gene in enumerate(self.cromossomo):
+                if self.comidas_encontradas == 5: 
+                    break
                 if gene == "L":
                     if  self.pos[0] < 0 or self.pos[1]-1 < 0 or self.pos[0] > (self.tamanho_matriz-1) or self.pos[1]-1 > (self.tamanho_matriz -1): break
                 
                     else:
                         if self.maze[self.pos[0]][self.pos[1]-1] == '0' or self.maze[self.pos[0]][self.pos[1]-1] == 'C':
+                            
                             if (self.pos[0],self.pos[1]-1) in self.visitados:
                                 self.nota_avaliacao -= 1
                                 self.pos = (self.pos[0],self.pos[1]-1)
@@ -46,6 +49,7 @@ class Individuo():
                         
                     else: 
                             if self.maze[self.pos[0]][self.pos[1]+1] == '0' or self.maze[self.pos[0]][self.pos[1]+1] == 'C':
+                              
                                 if (self.pos[0],self.pos[1]+1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0],self.pos[1]+1)
@@ -65,6 +69,7 @@ class Individuo():
                         
                     else: 
                             if self.maze[self.pos[0]-1][self.pos[1]] == '0' or self.maze[self.pos[0]-1][self.pos[1]] == 'C':
+                           
                                 if (self.pos[0]-1,self.pos[1]) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]-1,self.pos[1])
@@ -83,6 +88,7 @@ class Individuo():
 
                     else: 
                             if self.maze[self.pos[0]+1][self.pos[1]] == '0' or self.maze[self.pos[0]+1][self.pos[1]] == 'C':
+                         
                                 if (self.pos[0]+1,self.pos[1]) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]+1,self.pos[1])
@@ -102,6 +108,7 @@ class Individuo():
                            
                     else: 
                         if self.maze[self.pos[0]-1][self.pos[1]-1] == '0' or self.maze[self.pos[0]-1][self.pos[1]-1] == 'C':
+                       
                             if (self.pos[0]-1,self.pos[1]-1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]-1,self.pos[1]-1)
@@ -120,6 +127,7 @@ class Individuo():
                         
                     else:
                             if self.maze[self.pos[0]-1][self.pos[1]+1] == '0' or self.maze[self.pos[0]-1][self.pos[1]+1] == 'C':
+                      
                                 if (self.pos[0]-1,self.pos[1]+1)in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]-1,self.pos[1]+1)
@@ -138,6 +146,7 @@ class Individuo():
                         
                     else:
                         if self.maze[self.pos[0]+1][self.pos[1]-1] == '0' or self.maze[self.pos[0]+1][self.pos[1]-1] == 'C':
+       
                             if (self.pos[0]+1,self.pos[1]-1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]+1,self.pos[1]-1)
@@ -156,10 +165,11 @@ class Individuo():
                        
                     else: 
                          if self.maze[self.pos[0]+1][self.pos[1]+1] == '0' or self.maze[self.pos[0]+1][self.pos[1]+1] == 'C':
+                      
                             if (self.pos[0]+1,self.pos[1]+1) in self.visitados:
                                     self.nota_avaliacao -= 1
                                     self.pos = (self.pos[0]+1,self.pos[1]+1)
-                            elif (self.pos[0]+1,self.pos[1]+1) not in self.visitados:                                    
+                            elif (self.pos[0]+1,self.pos[1]+1) not in self.visitados:                                   
                                 self.nota_avaliacao += 2 if self.maze[self.pos[0]+1][self.pos[1]+1] == '0' else 10 
                                 if self.maze[self.pos[0]+1][self.pos[1]+1] == 'C':
                                         self.comidas_encontradas += 1
@@ -167,9 +177,11 @@ class Individuo():
                                 self.pos = (self.pos[0]+1,self.pos[1]+1)
                                 self.visitados.append(self.pos)
                             
-                         else: break   
+                         else: break  
 
-                self.salva_index += 1  
+                self.salva_index = i 
+
+                  
         
     def crossover(self, outro_individuo):
         corte = self.salva_index+1
@@ -307,7 +319,6 @@ class AlgoritmoGenetico():
                 self.salva_melhores_caminhos.append(self.melhor_solucao)
 
                 if self.melhor_solucao.comidas_encontradas == 5:
-                    print(f'index {self.melhor_solucao.salva_index}')
                     return self.salva_melhores_caminhos
         
                 
@@ -325,10 +336,7 @@ if __name__ == '__main__':
        melhores_caminhos = ag.resolver(taxa_mutacao) 
         
 
-       #writeFile(melhores_caminhos, maze)
+       writeFile(melhores_caminhos, maze)
        generateCompletePathFile(melhores_caminhos[-1].cromossomo, maze, tamanho_matriz, melhores_caminhos[-1].salva_index)
        
-
-        
-    
-    
+   
