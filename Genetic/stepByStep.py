@@ -1,6 +1,6 @@
-def writeMaze(maze, indivuo):
+def writeMaze(maze):
   labirinto = maze
-  with open('path.txt', 'a') as file: 
+  with open('stepByStep.txt', 'a') as file: 
     for x in labirinto:
         for y in x:
          file.write(y + ' ')
@@ -17,6 +17,7 @@ def writeFile(lista, maze):
            
             if i >= individuo.salva_index: 
                 break
+
             if gene == "L":
                 labirinto[pos[0]][pos[1]-1] = "-"
                 pos = (pos[0], pos[1]-1)
@@ -50,4 +51,4 @@ def writeFile(lista, maze):
                 pos = (pos[0]+1, pos[1]+1)
 
        
-        writeMaze(labirinto, individuo)
+        writeMaze(labirinto)

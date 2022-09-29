@@ -1,7 +1,8 @@
 import random
 from random import random as rand
 from maze import cria_matriz
-from fileHandler import writeFile
+from stepByStep import writeFile
+from completePath import generateCompletePathFile
 
 class Individuo():
     def __init__(self, maze, tamanho_matriz, geracao=0):
@@ -302,8 +303,9 @@ class AlgoritmoGenetico():
                 
                 melhor = self.populacao[0]
                 self.melhor_individuo(melhor) 
-                print(f"\nMelhor solução -> G: {self.melhor_solucao.geracao} Nota: {self.melhor_solucao.nota_avaliacao} Index: {self.melhor_solucao.salva_index} Comidas: {self.melhor_solucao.comidas_encontradas} Cromossomo: {self.melhor_solucao.cromossomo}")
+                print(f"\nMelhor solução -> G: {self.melhor_solucao.geracao} | Nota: {self.melhor_solucao.nota_avaliacao} | Index: {self.melhor_solucao.salva_index} | Comidas: {self.melhor_solucao.comidas_encontradas} | Cromossomo: {self.melhor_solucao.cromossomo}")
                 self.salva_melhores_caminhos.append(self.melhor_solucao)
+
                 if self.melhor_solucao.comidas_encontradas == 5:
                     print(f'index {self.melhor_solucao.salva_index}')
                     return self.salva_melhores_caminhos
@@ -315,13 +317,17 @@ if __name__ == '__main__':
     with open("./Genetic/labirinto1.txt", 'r') as f:
        arquivo = f.readlines()
        tamanho_matriz, maze = cria_matriz(arquivo)
+
        taxa_mutacao = 80
        tamanho_populacao = 200
+
        ag = AlgoritmoGenetico(tamanho_populacao, maze, tamanho_matriz)
        melhores_caminhos = ag.resolver(taxa_mutacao) 
         
 
-       writeFile(melhores_caminhos, maze)
+       #writeFile(melhores_caminhos, maze)
+       generateCompletePathFile(melhores_caminhos[-1].cromossomo, maze, tamanho_matriz, melhores_caminhos[-1].salva_index)
+       
 
         
     
